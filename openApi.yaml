@@ -1,0 +1,75 @@
+openapi: '3.0.3'
+info: 
+  title: revision API
+  version: 1.0.0
+servers:
+  - url: https://revision.com
+paths:
+  /books:
+    get: 
+      summary: get all books
+      description: Return all books ordered by creation date
+      operationId: getBooks
+      parameters:
+        - in: query
+          name: bookname
+          description: filter the returned books by the given name
+          required: false
+          schema: 
+            type: string
+      responses:
+        200:
+          description: the returned books
+          content:
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  bookName:
+                    type: string
+    put:
+      summary: Create or update books
+      operationId: createBooks
+      requestBody:
+        content:
+          application/json: 
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  bookName:
+                    type: string
+      responses:
+        200:
+          description: the created or updated books
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        bookName:
+          type: string
+        author:
+          type: string
+        releaseDate:
+          type: string
+          format: datec
+        topic: 
+          $ref: '#/components/schemas/Topic'
+    Topic:
+      type: string
+      enum:
+        - ROMANCE
+        - THRILLER
+        - COMEDY
